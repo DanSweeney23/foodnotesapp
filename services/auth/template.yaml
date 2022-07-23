@@ -1,0 +1,46 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  auth service
+
+Globals:
+  Function:
+    Timeout: 5
+
+Parameters:
+  Environment:
+    Type: String
+
+Resources:
+  SessionsTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: !Sub sessions-${Environment}
+      PrimaryKey:
+        Name: sessionid
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+
+  StartSessionFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: start_session/
+      Handler: start_session
+      Runtime: go1.x
+      Architectures:
+        - x86_64
+      Events:
+        apiForLambda:
+          Type: Api 
+          Properties:
+            Path: /auth/session/start
+            Method: GET
+      Environment: 
+        Variables:
+          SESSIONS_TABLE: !Ref SessionsTable
+      Policies:
+        DynamoDBWritePolicy:
+          TableName: !Ref SessionsTable
+

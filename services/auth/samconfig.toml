@@ -1,0 +1,22 @@
+version = 0.1
+[staging]
+[staging.deploy]
+[staging.deploy.parameters]
+stack_name = "auth-service-staging"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1kqnw1wppkc9s"
+s3_prefix = "auth-service/staging"
+region = "eu-west-2"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+image_repositories = []
+
+[production]
+[production.deploy]
+[production.deploy.parameters]
+stack_name = "auth-service-production"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1kqnw1wppkc9s"
+s3_prefix = "auth-service/production"
+region = "eu-west-2"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+image_repositories = []
